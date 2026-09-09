@@ -35,6 +35,7 @@ secrets:
   #   GITHUB_CLIENT_SECRET, OPENID_CLIENT_ID/OPENID_CLIENT_SECRET/
   #   OPENID_ISSUER (per configured auth provider),
   #   GITHUB_APP_* (when githubIntegration.enabled=true)
+  #   MINIO_ROOT_USER and MINIO_ROOT_PASSWORD (when storage.type=minio)
   existingSecret: ""
   # Shared JWT signing secret (auto-generated if empty)
   serverSecret: ""
@@ -57,6 +58,10 @@ secrets:
   openaiBaseUrl: ""
   # AI bot password (auto-generated if empty)
   aibotPassword: ""
+  # MinIO root user (auto-generated if empty)
+  minioRootUser: ""
+  # MinIO root password (auto-generated if empty)
+  minioRootPassword: ""
 
 # ──────────────────────────────────────────────────────────────
 # Authentication providers (set on the account service)

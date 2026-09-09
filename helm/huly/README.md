@@ -125,7 +125,9 @@ kubectl create secret generic huly-secrets -n <namespace> \
   --from-literal=REDPANDA_SUPERUSER_PASSWORD="$(openssl rand -hex 12)" \
   --from-literal=AIBOT_PASSWORD="$(openssl rand -hex 12)" \
   --from-literal=CR_DB_URL='postgres://selfhost:<password>@cockroach:26257/defaultdb' \
-  --from-literal=STORAGE_CONFIG='minio|minio?accessKey=<key>&secretKey=<secret>'
+  --from-literal=MINIO_ROOT_USER="minioadmin" \
+  --from-literal=MINIO_ROOT_PASSWORD="$(openssl rand -hex 16)" \
+  --from-literal=STORAGE_CONFIG='minio|minio?accessKey=<MINIO_ROOT_USER>&secretKey=<MINIO_ROOT_PASSWORD>'
 
 helm install huly ./helm/huly \
   --set domain=huly.mysite.com \
@@ -137,6 +139,8 @@ helm install huly ./helm/huly \
 | `SERVER_SECRET` | always |
 | `CR_DB_URL` | always |
 | `STORAGE_CONFIG` | always |
+| `MINIO_ROOT_USER` | `storage.type=minio` |
+| `MINIO_ROOT_PASSWORD` | `storage.type=minio` |
 | `COCKROACH_PASSWORD` | `cockroach.enabled=true` |
 | `REDPANDA_SUPERUSER_PASSWORD` | `redpanda.enabled=true` |
 | `AIBOT_PASSWORD`, `OPENAI_API_KEY` | `aibot.enabled=true` |

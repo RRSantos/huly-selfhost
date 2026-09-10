@@ -51,6 +51,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /cockroach/cockroach-data
+            - name: certs
+              mountPath: /cockroach/cockroach-certs
           {{- with .Values.cockroach.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
@@ -59,4 +61,7 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: cockroach-data
+        - name: certs
+          persistentVolumeClaim:
+            claimName: cockroach-certs
 {{- end }}

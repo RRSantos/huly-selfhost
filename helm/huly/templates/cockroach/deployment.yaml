@@ -25,7 +25,7 @@ spec:
           image: {{ .Values.cockroach.image }}
           args:
             - start-single-node
-            - --insecure
+            - --accept-sql-without-tls
           ports:
             - name: grpc
               containerPort: 26257

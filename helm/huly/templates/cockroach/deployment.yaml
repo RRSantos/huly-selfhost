@@ -52,7 +52,7 @@ spec:
             - name: data
               mountPath: /cockroach/cockroach-data
             - name: certs
-              mountPath: /cockroach/cockroach-certs
+              mountPath: /cockroach/certs
           {{- with .Values.cockroach.resources }}
           resources:
             {{- toYaml . | nindent 12 }}

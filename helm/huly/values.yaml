@@ -152,6 +152,9 @@ cockroach:
   storage: 10Gi
   storageClassName: ""
   resources: {}
+  certs:
+    storage: 100Mi
+    storageClassName: ""
 
 redpanda:
   enabled: true

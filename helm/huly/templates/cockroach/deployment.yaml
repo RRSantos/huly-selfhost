@@ -20,12 +20,71 @@ spec:
         app: cockroach
     spec:
       {{- include "huly.scheduling" . | nindent 6 }}
+      initContainers:
+        - name: generate-cockroach-certs
+          image: "{{ .Values.cockroach.image }}"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              CERTS_DIR="/cockroach/certs"
+
+              SERVICE_NAME="cockroach"
+              NAMESPACE="${POD_NAMESPACE}"
+
+              SERVICE_FQDN="${SERVICE_NAME}.${NAMESPACE}.svc.cluster.local"
+
+              echo "Checking CockroachDB certificates..."
+
+              if [ -f "${CERTS_DIR}/ca.crt" ] &&
+                [ -f "${CERTS_DIR}/node.crt" ] &&
+                [ -f "${CERTS_DIR}/node.key" ]; then
+                echo "Certificates already exist. Nothing to do."
+                exit 0
+              fi
+
+              echo "Generating CockroachDB CA..."
+
+              cockroach cert create-ca \
+                --certs-dir="${CERTS_DIR}" \
+                --ca-key="${CERTS_DIR}/ca.key"
+
+              echo "Generating CockroachDB node certificate..."
+
+              cockroach cert create-node \
+                localhost \
+                127.0.0.1 \
+                "${SERVICE_NAME}" \
+                "${SERVICE_NAME}.${NAMESPACE}" \
+                "${SERVICE_NAME}.${NAMESPACE}.svc" \
+                "${SERVICE_FQDN}" \
+                --certs-dir="${CERTS_DIR}" \
+                --ca-key="${CERTS_DIR}/ca.key"
+
+              echo "Certificates generated successfully."
+
+              # The CA private key is only needed to generate certificates.
+              # rm -f "${CERTS_DIR}/ca.key"
+
+              chmod 600 "${CERTS_DIR}/node.key"
+              chmod 644 "${CERTS_DIR}/ca.crt" "${CERTS_DIR}/node.crt"
+
+          volumeMounts:
+            - name: certs
+              mountPath: /cockroach/certs
       containers:
         - name: cockroach
           image: {{ .Values.cockroach.image }}
           args:
             - start-single-node
             - --accept-sql-without-tls
+            - --certs-dir=/cockroach/certs
           ports:
             - name: grpc
               containerPort: 26257

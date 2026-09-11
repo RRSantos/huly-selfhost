@@ -148,7 +148,7 @@ cockroach:
   enabled: true
   image: cockroachdb/cockroach:latest-v24.2
   database: defaultdb
-  username: selfhost
+  username: root
   storage: 10Gi
   storageClassName: ""
   resources: {}

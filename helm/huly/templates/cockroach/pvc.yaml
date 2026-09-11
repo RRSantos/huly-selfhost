@@ -16,6 +16,7 @@ spec:
       storage: {{ .Values.cockroach.storage }}
 
 ---
+{{- if .Values.cockroach.certs.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -31,4 +32,6 @@ spec:
   resources:
     requests:
       storage: {{ .Values.cockroach.certs.storage }}
+{{- end }}
+
 {{- end }}

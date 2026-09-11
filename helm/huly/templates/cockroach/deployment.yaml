@@ -20,6 +20,7 @@ spec:
         app: cockroach
     spec:
       {{- include "huly.scheduling" . | nindent 6 }}
+      {{- if .Values.cockroach.certs.enabled }}
       initContainers:
         - name: generate-cockroach-certs
           image: "{{ .Values.cockroach.image }}"
@@ -78,6 +79,7 @@ spec:
           volumeMounts:
             - name: certs
               mountPath: /cockroach/certs
+      {{- end }}
       containers:
         - name: cockroach
           image: "{{ .Values.cockroach.image }}"
@@ -93,7 +95,7 @@ spec:
               value: {{ .Values.cockroach.database }}
             - name: COCKROACH_USER
               value: {{ .Values.cockroach.username }}
-            {{- include "huly.envSecret" (dict "name" "COCKROACH_PASSWORD" "key" "COCKROACH_PASSWORD" "root" .) | nindent 12 }}
+            # {{- include "huly.envSecret" (dict "name" "COCKROACH_PASSWORD" "key" "COCKROACH_PASSWORD" "root" .) | nindent 12 }}
           readinessProbe:
             exec:
               command: ['sh', '-c', 'curl -sf http://localhost:8080/health?ready=1']

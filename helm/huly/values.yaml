@@ -28,7 +28,6 @@ secrets:
   # Operator / Sealed Secrets / Vault.
   #
   # Required keys: SERVER_SECRET, CR_DB_URL, STORAGE_CONFIG,
-  #   COCKROACH_PASSWORD (when cockroach.enabled=true),
   #   REDPANDA_SUPERUSER_PASSWORD (when redpanda.enabled=true),
   #   AIBOT_PASSWORD and OPENAI_API_KEY (when aibot.enabled=true),
   #   GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET, GITHUB_CLIENT_ID/

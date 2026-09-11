@@ -90,12 +90,6 @@ spec:
               containerPort: 26257
             - name: http
               containerPort: 8080
-          env:
-            - name: COCKROACH_DATABASE
-              value: {{ .Values.cockroach.database }}
-            - name: COCKROACH_USER
-              value: {{ .Values.cockroach.username }}
-            # {{- include "huly.envSecret" (dict "name" "COCKROACH_PASSWORD" "key" "COCKROACH_PASSWORD" "root" .) | nindent 12 }}
           readinessProbe:
             exec:
               command: ['sh', '-c', 'curl -sf http://localhost:8080/health?ready=1']

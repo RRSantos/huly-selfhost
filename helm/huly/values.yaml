@@ -155,7 +155,14 @@ cockroach:
   certs:
     storage: 100Mi
     storageClassName: ""
-
+  container:
+    args:
+      - start-single-node
+      - --listen-addr=127.0.0.1:26257
+      - --http-addr=127.0.0.1:8080
+      - --advertise-addr=cockroach:26257
+      - --certs-dir=/cockroach/certs
+      - --accept-sql-without-tls
 redpanda:
   enabled: true
   image: docker.redpanda.com/redpandadata/redpanda:v24.3.6

@@ -213,6 +213,7 @@ front:
 
 account:
   replicas: 1
+  hostAliases: []
   resources:
     limits:
       memory: 512Mi

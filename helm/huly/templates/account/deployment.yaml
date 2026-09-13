@@ -19,6 +19,10 @@ spec:
         app: account
     spec:
       {{- include "huly.scheduling" . | nindent 6 }}
+      {{- with .Values.account.hostAliases }}
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- include "huly.waitForCockroach" . | nindent 8 }}
         {{- include "huly.waitForRedpanda" . | nindent 8 }}
